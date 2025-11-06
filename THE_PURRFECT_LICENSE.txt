@@ -1,0 +1,9 @@
+💌 The Purrfect License
+
+Code is licensed under the MIT License.
+
+Art, emoji, prompts, and text-based works are licensed under
+Creative Commons Attribution 4.0 International (CC BY 4.0).
+
+In short:
+"Do whatever you want, as long as you don’t pretend you did it alone."
