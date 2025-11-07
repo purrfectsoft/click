@@ -577,12 +577,16 @@ export async function GET(
 
 function textViewHTML(content: string, visibility: string): string {
   // Escape HTML special characters to prevent XSS
+  // Important: & must be replaced first to avoid double-escaping
   const escaped = content
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+  
+  // Note: For production, consider using a library like 'he' or DOMPurify
+  // to handle edge cases more robustly
     
   return `<!DOCTYPE html>
 <html>
@@ -1109,7 +1113,8 @@ res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 **Collision Probability (Birthday Paradox):**
 - At 1 million links: ~0.00018% chance of collision
 - At 10 million links: ~0.018% chance
-- Formula: P ≈ n² / (2 * 64⁸) where n is number of links
+- Formula: P ≈ n² / (2 × 64^8) where n is number of links
+- Note: 64^8 = 281,474,976,710,656 possible IDs
 
 ---
 
