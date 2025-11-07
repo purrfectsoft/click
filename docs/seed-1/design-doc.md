@@ -2,7 +2,7 @@
 
 Status: Ready for Implementation  
 Reference: docs/prd_v1.2_final.md  
-Version: 2.0  
+Version: 2.0 (Document Versioning)  
 Last Updated: 2025-11-07
 
 ## Overview
@@ -149,6 +149,11 @@ User → CDN (Cloudflare)
 import { ExpoRequest, ExpoResponse } from 'expo-router/server';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
+
+// Note: These are example implementations. Actual implementation should:
+// - Import kvStore from a proper KV client wrapper
+// - Define helper functions before use or in separate modules
+// - Use environment variables for configuration (base URL, etc.)
 
 const ShortenSchema = z.object({
   url: z.string().url().max(2048),
@@ -571,10 +576,13 @@ export async function GET(
 }
 
 function textViewHTML(content: string, visibility: string): string {
+  // Escape HTML special characters to prevent XSS
   const escaped = content
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
     
   return `<!DOCTYPE html>
 <html>
@@ -1098,6 +1106,11 @@ res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 - Retry up to 5 times with new ID
 - Return 503 if all attempts fail (extremely unlikely)
 
+**Collision Probability (Birthday Paradox):**
+- At 1 million links: ~0.00018% chance of collision
+- At 10 million links: ~0.018% chance
+- Formula: P ≈ n² / (2 * 64⁸) where n is number of links
+
 ---
 
 ### 6. Synchronous vs. Asynchronous Analytics
@@ -1401,7 +1414,7 @@ npm install -g expo-cli
 
 ### Initial Setup
 ```bash
-# Clone repo
+# Clone repo (verify the correct repository URL)
 git clone https://github.com/purrfectsoft/click.git
 cd click
 
